@@ -10,6 +10,9 @@ import Admin from './pages/Admin';
 import Notifications from './components/Notifications';
 import Wishlist from './components/Wishlist';
 import CompareProducts from './components/CompareProducts';
+import LiveChat from './components/LiveChat';
+import AIAssistant from './components/AIAssistant';
+import SocialProof from './components/SocialProof';
 import { useStore } from './store/useStore';
 
 export default function App() {
@@ -25,6 +28,9 @@ export default function App() {
       <Notifications />
       <Wishlist />
       <CompareProducts />
+      <LiveChat />
+      <AIAssistant />
+      <SocialProof />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />

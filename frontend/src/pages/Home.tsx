@@ -1,10 +1,20 @@
 import { useEffect, useState } from 'react';
-import { Search, SlidersHorizontal, Grid, List } from 'lucide-react';
+import { Search, SlidersHorizontal, Grid, List, TrendingUp } from 'lucide-react';
 import api from '../services/api';
 import { Product } from '../types';
 import ProductCard from '../components/ProductCard';
 import QuickView from '../components/QuickView';
+import RecentlyViewed from '../components/RecentlyViewed';
+import VoiceSearch from '../components/VoiceSearch';
+import GlobalShipping from '../components/GlobalShipping';
+import MetaverseStore from '../components/MetaverseStore';
+import FlashSale from '../components/FlashSale';
+import LoyaltyProgram from '../components/LoyaltyProgram';
+import GamificationBadges from '../components/GamificationBadges';
+import PersonalStylist from '../components/PersonalStylist';
+import LiveStream from '../components/LiveStream';
 import { useTranslation } from '../hooks/useTranslation';
+import { useStore } from '../store/useStore';
 
 export default function Home() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -15,6 +25,7 @@ export default function Home() {
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
   const [priceRange, setPriceRange] = useState([0, 10000]);
   const t = useTranslation();
+  const user = useStore(state => state.user);
 
   useEffect(() => {
     api.get('/products', { params: { search, category: category || undefined } })
@@ -27,11 +38,25 @@ export default function Home() {
       });
   }, [search, category, sortBy, priceRange]);
 
+  const [trending, setTrending] = useState<Product[]>([]);
   const categories = ['Eletrônicos', 'Roupas', 'Livros', 'Casa', 'Esportes'];
+
+  useEffect(() => {
+    api.get('/recommendations/trending').then(res => setTrending(res.data)).catch(() => {});
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       <div className="container mx-auto px-4 py-8">
+        <GlobalShipping />
+        <MetaverseStore />
+        <LiveStream />
+        <FlashSale products={products.slice(0, 4)} />
+        <div className="grid lg:grid-cols-2 gap-6 mb-8">
+          {user && <LoyaltyProgram />}
+          {user && <GamificationBadges />}
+        </div>
+        <PersonalStylist />
         <div className="mb-8">
           <h1 className="text-5xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-6">{t.home.title}</h1>
           <div className="flex flex-col lg:flex-row gap-4">
@@ -61,8 +86,20 @@ export default function Home() {
               <button onClick={() => setViewMode('list')} className={`p-3 rounded-xl transition ${viewMode === 'list' ? 'bg-purple-600 text-white' : 'bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700'}`}>
                 <List size={20} />
               </button>
+              <VoiceSearch onSearch={setSearch} />
             </div>
           </div>
+          {trending.length > 0 && (
+            <div className="mb-6">
+              <div className="flex items-center gap-2 mb-4">
+                <TrendingUp className="text-orange-500" size={24} />
+                <h2 className="text-2xl font-bold">Em Alta</h2>
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                {trending.map(product => <ProductCard key={product.id} product={product} onQuickView={setQuickViewProduct} />)}
+              </div>
+            </div>
+          )}
         </div>
         <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6' : 'space-y-4'}>
           {products.map(product => <ProductCard key={product.id} product={product} onQuickView={setQuickViewProduct} />)}
@@ -73,6 +110,7 @@ export default function Home() {
           </div>
         )}
         <QuickView product={quickViewProduct} onClose={() => setQuickViewProduct(null)} />
+        <RecentlyViewed />
       </div>
     </div>
   );

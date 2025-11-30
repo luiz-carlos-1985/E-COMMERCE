@@ -1,6 +1,14 @@
 import { X, ShoppingCart, Heart, Star } from 'lucide-react';
 import { Product } from '../types';
 import { useStore } from '../store/useStore';
+import ARViewer from './ARViewer';
+import SocialShare from './SocialShare';
+import PriceAlert from './PriceAlert';
+import VirtualTryOn from './VirtualTryOn';
+import InstallmentCalculator from './InstallmentCalculator';
+import SizeGuide from './SizeGuide';
+import SustainabilityScore from './SustainabilityScore';
+import CryptoPayment from './CryptoPayment';
 
 interface Props {
   product: Product | null;
@@ -41,6 +49,20 @@ export default function QuickView({ product, onClose }: Props) {
             </div>
             <p className="text-4xl font-bold text-purple-600 dark:text-purple-400 mb-4">R$ {product.price.toFixed(2)}</p>
             <p className="text-gray-600 dark:text-gray-300 mb-6">{product.description}</p>
+            <InstallmentCalculator price={product.price} />
+            <div className="flex gap-2 my-4">
+              <ARViewer product={product} />
+              <VirtualTryOn />
+              <SocialShare product={product} />
+            </div>
+            <div className="flex gap-4 mb-4">
+              <PriceAlert productId={product.id} currentPrice={product.price} />
+              <SizeGuide />
+            </div>
+            <SustainabilityScore score={85} />
+            <div className="my-4">
+              <CryptoPayment />
+            </div>
             <div className="flex gap-4 mb-6">
               <button onClick={() => { addToCart(product); onClose(); }} className="flex-1 bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 rounded-xl font-semibold hover:from-purple-700 hover:to-blue-700 transition flex items-center justify-center gap-2">
                 <ShoppingCart size={20} /> Adicionar ao Carrinho

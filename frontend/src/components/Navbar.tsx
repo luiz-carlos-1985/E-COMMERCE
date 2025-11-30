@@ -7,7 +7,7 @@ import { useTranslation } from '../hooks/useTranslation';
 
 export default function Navbar() {
   const { user, cart, wishlist, logout } = useStore();
-  const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const cartCount = cart?.reduce((sum, item) => sum + item.quantity, 0) || 0;
   const t = useTranslation();
 
   return (

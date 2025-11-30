@@ -9,9 +9,12 @@ interface Store {
   wishlist: Product[];
   compareList: Product[];
   notifications: Notification[];
+  recentlyViewed: Product[];
   theme: 'light' | 'dark';
   language: Language;
+  discount: number;
   setUser: (user: User | null) => void;
+  setDiscount: (discount: number) => void;
   addToCart: (product: Product) => void;
   removeFromCart: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
@@ -34,10 +37,17 @@ export const useStore = create<Store>()(persist((set, get) => ({
   wishlist: [],
   compareList: [],
   notifications: [],
+  recentlyViewed: [],
   theme: 'light',
-  language: 'pt',
+  language: 'en',
+  discount: 0,
   setUser: (user) => set({ user }),
-  addToCart: (product) => set((state) => {
+  addToCart: (product) => {
+    const state = get();
+    if (!state.recentlyViewed.find(p => p.id === product.id)) {
+      set({ recentlyViewed: [product, ...state.recentlyViewed.slice(0, 11)] });
+    }
+    set((state) => {
     const existing = state.cart.find(item => item.productId === product.id);
     if (existing) {
       return {
@@ -49,7 +59,8 @@ export const useStore = create<Store>()(persist((set, get) => ({
       };
     }
     return { cart: [...state.cart, { productId: product.id, quantity: 1, price: product.price, product }] };
-  }),
+    });
+  },
   removeFromCart: (productId) => set((state) => ({
     cart: state.cart.filter(item => item.productId !== productId)
   })),
@@ -90,6 +101,7 @@ export const useStore = create<Store>()(persist((set, get) => ({
     return { theme: newTheme };
   }),
   setLanguage: (lang) => set({ language: lang }),
+  setDiscount: (discount: number) => set({ discount }),
   logout: () => {
     localStorage.removeItem('token');
     set({ user: null, cart: [], wishlist: [], compareList: [] });

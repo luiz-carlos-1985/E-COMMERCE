@@ -2,11 +2,14 @@ import { useNavigate } from 'react-router-dom';
 import { Trash2, Plus, Minus } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import api from '../services/api';
+import CouponInput from '../components/CouponInput';
+import ProgressBar from '../components/ProgressBar';
 
 export default function Cart() {
-  const { cart, removeFromCart, updateQuantity, clearCart } = useStore();
+  const { cart, removeFromCart, updateQuantity, clearCart, discount, setDiscount, addNotification } = useStore();
   const navigate = useNavigate();
-  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const subtotal = cart?.reduce((sum, item) => sum + item.price * item.quantity, 0) || 0;
+  const total = subtotal - (subtotal * (discount || 0) / 100);
 
   const handleCheckout = async () => {
     try {
@@ -19,7 +22,7 @@ export default function Cart() {
     }
   };
 
-  if (cart.length === 0) {
+  if (!cart || cart.length === 0) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
         <div className="text-center">
@@ -60,14 +63,22 @@ export default function Cart() {
               </div>
             ))}
           </div>
-          <div className="bg-white p-6 rounded-xl shadow-lg h-fit">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">Resumo</h2>
-            <div className="space-y-2 mb-4">
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg h-fit space-y-4">
+            <h2 className="text-2xl font-bold mb-4">Resumo</h2>
+            <ProgressBar total={subtotal} />
+            <CouponInput onApply={(d) => { setDiscount(d); addNotification('success', `Desconto de ${d}% aplicado!`); }} />
+            <div className="space-y-2">
               <div className="flex justify-between">
                 <span>Subtotal:</span>
-                <span className="font-semibold">R$ {total.toFixed(2)}</span>
+                <span className="font-semibold">R$ {subtotal.toFixed(2)}</span>
               </div>
-              <div className="flex justify-between text-xl font-bold text-purple-600 pt-2 border-t">
+              {discount > 0 && (
+                <div className="flex justify-between text-green-600">
+                  <span>Desconto ({discount}%):</span>
+                  <span className="font-semibold">-R$ {(subtotal * discount / 100).toFixed(2)}</span>
+                </div>
+              )}
+              <div className="flex justify-between text-xl font-bold text-purple-600 dark:text-purple-400 pt-2 border-t dark:border-gray-700">
                 <span>Total:</span>
                 <span>R$ {total.toFixed(2)}</span>
               </div>
