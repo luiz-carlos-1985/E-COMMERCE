@@ -13,12 +13,13 @@ export default function Cart() {
 
   const handleCheckout = async () => {
     try {
-      await api.post('/orders', { items: cart });
+      const response = await api.post('/orders', { items: cart });
       clearCart();
-      alert('Pedido realizado com sucesso!');
+      addNotification('success', 'Pedido realizado com sucesso!');
       navigate('/orders');
-    } catch {
-      alert('Erro ao finalizar pedido');
+    } catch (error: any) {
+      const message = error.response?.data?.error || 'Erro ao finalizar pedido';
+      addNotification('error', message);
     }
   };
 

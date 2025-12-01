@@ -27,13 +27,13 @@ export default function ProductCard({ product, onQuickView }: Props) {
           <button onClick={() => onQuickView?.(product)} className="p-2 bg-white/90 rounded-full hover:bg-purple-500 hover:text-white transition backdrop-blur-sm">
             <Eye size={18} />
           </button>
-          <button onClick={() => { addToCompare(product); addNotification('success', 'Adicionado à comparação!'); }} className="p-2 bg-white/90 rounded-full hover:bg-blue-500 hover:text-white transition backdrop-blur-sm">
+          <button onClick={() => { addToCompare(product); addNotification('success', t.home.addedCompare || 'Added to compare!'); }} className="p-2 bg-white/90 rounded-full hover:bg-blue-500 hover:text-white transition backdrop-blur-sm">
             <GitCompare size={18} />
           </button>
         </div>
         {product.stock < 10 && product.stock > 0 && (
           <div className="absolute top-2 left-2 bg-orange-500 text-white px-2 py-1 rounded-full text-xs font-semibold">
-            Últimas {product.stock} unidades!
+            {t.home.lastUnits?.replace('{n}', product.stock.toString()) || `Last ${product.stock} units!`}
           </div>
         )}
       </div>
@@ -47,7 +47,7 @@ export default function ProductCard({ product, onQuickView }: Props) {
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{t.home.stock}: {product.stock}</p>
           </div>
           <button
-            onClick={() => { addToCart(product); addNotification('success', 'Produto adicionado!'); }}
+            onClick={() => { addToCart(product); addNotification('success', t.home.addedCart || 'Product added!'); }}
             disabled={product.stock === 0}
             className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:from-purple-700 hover:to-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
           >

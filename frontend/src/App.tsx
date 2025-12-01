@@ -7,8 +7,9 @@ import Register from './pages/Register';
 import Cart from './pages/Cart';
 import Orders from './pages/Orders';
 import Admin from './pages/Admin';
+import Profile from './pages/Profile';
 import Notifications from './components/Notifications';
-import Wishlist from './components/Wishlist';
+import WishlistPage from './pages/Wishlist';
 import CompareProducts from './components/CompareProducts';
 import LiveChat from './components/LiveChat';
 import AIAssistant from './components/AIAssistant';
@@ -20,17 +21,20 @@ export default function App() {
   const theme = useStore(state => state.theme);
   
   useEffect(() => {
+    document.documentElement.classList.add('dark');
+  }, []);
+  
+  useEffect(() => {
     document.documentElement.classList.toggle('dark', theme === 'dark');
   }, [theme]);
 
   return (
-    <BrowserRouter>
+    <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <OfflineNotification />
       <Navbar />
       <Notifications />
-      <Wishlist />
       <CompareProducts />
-      <LiveChat />
+
       <AIAssistant />
       <SocialProof />
       <Routes>
@@ -40,6 +44,8 @@ export default function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/orders" element={<Orders />} />
         <Route path="/admin" element={<Admin />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/wishlist" element={<WishlistPage />} />
       </Routes>
     </BrowserRouter>
   );

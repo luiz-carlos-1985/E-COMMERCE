@@ -11,7 +11,7 @@ export default function Navbar() {
   const t = useTranslation();
 
   return (
-    <nav className="bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg">
+    <nav className="bg-gradient-to-r from-purple-600 to-blue-600 dark:from-gray-800 dark:to-gray-900 text-white shadow-lg transition-colors">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <Link to="/" className="text-2xl font-bold flex items-center gap-2">
           <span className="text-3xl">🛍️</span>
@@ -27,6 +27,7 @@ export default function Navbar() {
                 </Link>
               )}
               <Link to="/orders" className="hover:text-purple-200 transition">{t.nav.orders}</Link>
+              <Link to="/profile" className="hover:text-purple-200 transition">{t.nav.profile || 'Profile'}</Link>
               <Link to="/wishlist" className="relative hover:text-purple-200 transition">
                 <Heart size={24} />
                 {wishlist.length > 0 && (

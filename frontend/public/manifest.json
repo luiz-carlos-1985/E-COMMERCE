@@ -1,0 +1,44 @@
+{
+  "name": "E-Commerce Ultra Moderno",
+  "short_name": "E-Commerce",
+  "description": "Plataforma de e-commerce com IA e recursos em tempo real",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#9333ea",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["shopping", "business"],
+  "screenshots": [
+    {
+      "src": "/screenshot1.png",
+      "sizes": "1280x720",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Carrinho",
+      "url": "/cart",
+      "description": "Ver carrinho de compras"
+    },
+    {
+      "name": "Pedidos",
+      "url": "/orders",
+      "description": "Ver meus pedidos"
+    }
+  ]
+}

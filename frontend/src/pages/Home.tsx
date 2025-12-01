@@ -35,6 +35,10 @@ export default function Home() {
         if (sortBy === 'price-desc') filtered.sort((a: Product, b: Product) => b.price - a.price);
         if (sortBy === 'name') filtered.sort((a: Product, b: Product) => a.name.localeCompare(b.name));
         setProducts(filtered);
+      })
+      .catch(err => {
+        console.error('Erro ao carregar produtos:', err);
+        setProducts([]);
       });
   }, [search, category, sortBy, priceRange]);
 
@@ -75,9 +79,9 @@ export default function Home() {
               {categories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
             </select>
             <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} className="px-4 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-700 dark:bg-gray-800 focus:ring-2 focus:ring-purple-600 transition">
-              <option value="name">Nome</option>
-              <option value="price-asc">Menor Preço</option>
-              <option value="price-desc">Maior Preço</option>
+              <option value="name">{t.home.sortName || 'Name'}</option>
+              <option value="price-asc">{t.home.sortPriceAsc || 'Price: Low to High'}</option>
+              <option value="price-desc">{t.home.sortPriceDesc || 'Price: High to Low'}</option>
             </select>
             <div className="flex gap-2">
               <button onClick={() => setViewMode('grid')} className={`p-3 rounded-xl transition ${viewMode === 'grid' ? 'bg-purple-600 text-white' : 'bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700'}`}>
@@ -93,7 +97,7 @@ export default function Home() {
             <div className="mb-6">
               <div className="flex items-center gap-2 mb-4">
                 <TrendingUp className="text-orange-500" size={24} />
-                <h2 className="text-2xl font-bold">Em Alta</h2>
+                <h2 className="text-2xl font-bold dark:text-gray-100">{t.home.trending || 'Trending'}</h2>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
                 {trending.map(product => <ProductCard key={product.id} product={product} onQuickView={setQuickViewProduct} />)}
@@ -106,7 +110,7 @@ export default function Home() {
         </div>
         {products.length === 0 && (
           <div className="text-center py-20">
-            <p className="text-2xl text-gray-400 dark:text-gray-600">Nenhum produto encontrado</p>
+            <p className="text-2xl text-gray-400 dark:text-gray-600">{t.home.noProducts || 'No products found'}</p>
           </div>
         )}
         <QuickView product={quickViewProduct} onClose={() => setQuickViewProduct(null)} />

@@ -28,6 +28,7 @@ interface Store {
   removeNotification: (id: string) => void;
   toggleTheme: () => void;
   setLanguage: (lang: Language) => void;
+  updateProductStock: (productId: string, stock: number) => void;
   logout: () => void;
 }
 
@@ -38,8 +39,8 @@ export const useStore = create<Store>()(persist((set, get) => ({
   compareList: [],
   notifications: [],
   recentlyViewed: [],
-  theme: 'light',
-  language: 'en',
+  theme: 'dark',
+  language: 'en' as Language,
   discount: 0,
   setUser: (user) => set({ user }),
   addToCart: (product) => {
@@ -102,6 +103,10 @@ export const useStore = create<Store>()(persist((set, get) => ({
   }),
   setLanguage: (lang) => set({ language: lang }),
   setDiscount: (discount: number) => set({ discount }),
+  updateProductStock: (productId: string, stock: number) => set((state) => ({
+    recentlyViewed: state.recentlyViewed.map(p => p.id === productId ? { ...p, stock } : p),
+    wishlist: state.wishlist.map(p => p.id === productId ? { ...p, stock } : p)
+  })),
   logout: () => {
     localStorage.removeItem('token');
     set({ user: null, cart: [], wishlist: [], compareList: [] });

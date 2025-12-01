@@ -24,15 +24,18 @@ export default function Admin() {
     try {
       if (editingId) {
         await api.put(`/products/${editingId}`, form);
+        alert('Produto atualizado com sucesso!');
       } else {
         await api.post('/products', form);
+        alert('Produto criado com sucesso!');
       }
       setShowForm(false);
       setEditingId(null);
       setForm({ name: '', description: '', price: 0, image: '', category: '', stock: 0 });
       loadData();
-    } catch {
-      alert('Erro ao salvar produto');
+    } catch (error: any) {
+      const message = error.response?.data?.error || 'Erro ao salvar produto';
+      alert(message);
     }
   };
 

@@ -4,7 +4,7 @@ import { authenticate } from '../middleware/auth';
 
 const router = Router();
 
-router.get('/recommendations', authenticate, getRecommendations);
+router.get('/', authenticate, getRecommendations);
 router.get('/trending', getTrending);
 
 export default router;
