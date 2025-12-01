@@ -15,6 +15,10 @@ import LiveChat from './components/LiveChat';
 import AIAssistant from './components/AIAssistant';
 import SocialProof from './components/SocialProof';
 import OfflineNotification from './components/OfflineNotification';
+import LoyaltyProgram from './pages/LoyaltyProgram';
+import MetaverseStore from './pages/MetaverseStore';
+import PersonalStylist from './pages/PersonalStylist';
+import Dashboard from './pages/Dashboard';
 import { useStore } from './store/useStore';
 
 export default function App() {
@@ -46,6 +50,10 @@ export default function App() {
         <Route path="/admin" element={<Admin />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/wishlist" element={<WishlistPage />} />
+        <Route path="/loyalty" element={<LoyaltyProgram />} />
+        <Route path="/metaverse" element={<MetaverseStore />} />
+        <Route path="/stylist" element={<PersonalStylist />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </BrowserRouter>
   );

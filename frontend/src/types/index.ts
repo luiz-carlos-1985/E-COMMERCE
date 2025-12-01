@@ -35,3 +35,52 @@ export interface Order {
   createdAt: string;
   orderItems: CartItem[];
 }
+
+export interface LoyaltyData {
+  points: number;
+  tier: 'BRONZE' | 'SILVER' | 'GOLD' | 'PLATINUM' | 'DIAMOND';
+  nextTier: string | null;
+  pointsToNext: number;
+  achievements: Achievement[];
+  benefits: string[];
+}
+
+export interface Achievement {
+  id: string;
+  type: string;
+  title: string;
+  description: string;
+  icon: string;
+  points: number;
+  unlockedAt: string;
+}
+
+export interface MetaverseAvatar {
+  id: string;
+  userId: string;
+  avatarUrl: string;
+  accessories: string[];
+  position: string;
+}
+
+export interface StyleProfile {
+  id: string;
+  userId: string;
+  bodyType: string;
+  preferredColors: string[];
+  preferredStyles: string[];
+  sizes: string;
+  budget: string;
+}
+
+export interface StyleRecommendation extends Product {
+  matchScore: number;
+  reason: string;
+}
+
+export interface Outfit {
+  top?: Product;
+  bottom?: Product;
+  shoes?: Product;
+  accessories?: Product[];
+}

@@ -8,13 +8,20 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  password  String
-  name      String
-  role      Role     @default(CUSTOMER)
-  createdAt DateTime @default(now())
-  orders    Order[]
+  id              String            @id @default(uuid())
+  email           String            @unique
+  password        String
+  name            String
+  role            Role              @default(CUSTOMER)
+  avatar          String?
+  createdAt       DateTime          @default(now())
+  orders          Order[]
+  loyaltyPoints   Int               @default(0)
+  loyaltyTier     LoyaltyTier       @default(BRONZE)
+  metaverseAvatar MetaverseAvatar?
+  styleProfile    StyleProfile?
+  achievements    Achievement[]
+  wishlist        WishlistItem[]
 }
 
 enum Role {
@@ -22,16 +29,30 @@ enum Role {
   ADMIN
 }
 
+enum LoyaltyTier {
+  BRONZE
+  SILVER
+  GOLD
+  PLATINUM
+  DIAMOND
+}
+
 model Product {
-  id          String      @id @default(uuid())
-  name        String
-  description String
-  price       Float
-  image       String
-  category    String
-  stock       Int
-  createdAt   DateTime    @default(now())
-  orderItems  OrderItem[]
+  id              String            @id @default(uuid())
+  name            String
+  description     String
+  price           Float
+  image           String
+  category        String
+  stock           Int
+  createdAt       DateTime          @default(now())
+  orderItems      OrderItem[]
+  model3D         String?
+  metaversePrice  Float?
+  colors          String[]          @default([])
+  sizes           String[]          @default([])
+  tags            String[]          @default([])
+  wishlistItems   WishlistItem[]
 }
 
 model Order {
@@ -60,4 +81,49 @@ model OrderItem {
   product   Product @relation(fields: [productId], references: [id])
   quantity  Int
   price     Float
+}
+
+model MetaverseAvatar {
+  id          String   @id @default(uuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id])
+  avatarUrl   String
+  accessories String[]
+  position    String   @default("{\"x\":0,\"y\":0,\"z\":0}")
+  createdAt   DateTime @default(now())
+}
+
+model StyleProfile {
+  id              String   @id @default(uuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id])
+  bodyType        String
+  preferredColors String[]
+  preferredStyles String[]
+  sizes           String   @default("{\"top\":\"\",\"bottom\":\"\",\"shoes\": \"\"}")
+  budget          String   @default("MEDIUM")
+  createdAt       DateTime @default(now())
+}
+
+model Achievement {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  type        String
+  title       String
+  description String
+  icon        String
+  points      Int
+  unlockedAt  DateTime @default(now())
+}
+
+model WishlistItem {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@unique([userId, productId])
 }

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ShoppingCart, User, LogOut, LayoutDashboard, Heart } from 'lucide-react';
+import { ShoppingCart, User, LogOut, LayoutDashboard, Heart, Trophy, Box, Sparkles } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import ThemeToggle from './ThemeToggle';
 import LanguageSelector from './LanguageSelector';
@@ -27,6 +27,15 @@ export default function Navbar() {
                 </Link>
               )}
               <Link to="/orders" className="hover:text-purple-200 transition">{t.nav.orders}</Link>
+              <Link to="/loyalty" className="flex items-center gap-1 hover:text-purple-200 transition">
+                <Trophy size={18} /> Fidelidade
+              </Link>
+              <Link to="/metaverse" className="flex items-center gap-1 hover:text-purple-200 transition">
+                <Box size={18} /> Metaverso
+              </Link>
+              <Link to="/stylist" className="flex items-center gap-1 hover:text-purple-200 transition">
+                <Sparkles size={18} /> Estilista
+              </Link>
               <Link to="/profile" className="hover:text-purple-200 transition">{t.nav.profile || 'Profile'}</Link>
               <Link to="/wishlist" className="relative hover:text-purple-200 transition">
                 <Heart size={24} />
