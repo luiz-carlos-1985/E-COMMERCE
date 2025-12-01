@@ -13,6 +13,7 @@ import CompareProducts from './components/CompareProducts';
 import LiveChat from './components/LiveChat';
 import AIAssistant from './components/AIAssistant';
 import SocialProof from './components/SocialProof';
+import OfflineNotification from './components/OfflineNotification';
 import { useStore } from './store/useStore';
 
 export default function App() {
@@ -24,6 +25,7 @@ export default function App() {
 
   return (
     <BrowserRouter>
+      <OfflineNotification />
       <Navbar />
       <Notifications />
       <Wishlist />
